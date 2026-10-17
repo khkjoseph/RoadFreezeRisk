@@ -1,0 +1,27 @@
+project: jeonbuk-road-icing
+seed: 42
+# IMPORTANT: confirm these validation-only stations with the official rulebook and real source.
+# Values below come from a prior competition description, not from the uploaded data dictionary.
+holdout_station_ids: [12410, 33411, 23402]
+validation_station_fraction: 0.20
+# Features must be available at unobserved segments WITHOUT using target RWIS sensors.
+# The training script intersects these with columns actually present; at least one is required.
+feature_candidates:
+  - air_temp_c
+  - relative_humidity_pct
+  - wind_speed_ms
+  - precipitation_mm_1h
+  - dew_point_c
+  - air_pressure_hpa
+  - solar_radiation_mj_m2
+  - elevation_m
+  - latitude
+  - longitude
+  - is_bridge
+  - is_tunnel
+  - dist_river_m
+  - dist_bridge_m
+  - road_slope_pct
+# Predict target using other stations; holdout station labels used only for final scoring.
+regression_target: road_surface_temp_c
+classification_target: is_ice

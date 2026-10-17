@@ -1,0 +1,18 @@
+# Copy as configs/column_mapping.local.yaml AFTER inspecting actual source columns.
+# Do NOT assume the keys below match the competition files.
+# Example schema: source-specific original column name -> canonical name.
+sources:
+  rwis:
+    path: data/raw/rwis/REPLACE_WITH_FILE.csv
+    original_to_canonical:
+      REPLACE_TIMESTAMP_COLUMN: timestamp
+      REPLACE_STATION_ID_COLUMN: station_id
+      REPLACE_SURFACE_TEMP_COLUMN: road_surface_temp_c
+      REPLACE_ROAD_STATE_COLUMN: road_state
+  asos:
+    path: data/raw/asos/REPLACE_WITH_FILE.csv
+    original_to_canonical: {}
+  aws:
+    path: data/raw/aws/REPLACE_WITH_FILE.csv
+    original_to_canonical: {}
+# For shapefiles include correct geometry column name and original EPSG/CRS after inspection.

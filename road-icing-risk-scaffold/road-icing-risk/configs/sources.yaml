@@ -1,0 +1,33 @@
+time_ranges:
+  - '2024-11-01/2025-02-28'
+  - '2025-11-01/2026-02-28'
+# Descriptive catalog only; not exact file names.
+sources:
+  rwis:
+    raw_dir: data/raw/rwis
+    group: meteorology/road_weather
+    expected: [timestamp, site_name, highway_name, latitude, longitude, road_state, road_surface_temp_c]
+  asos:
+    raw_dir: data/raw/asos
+    group: meteorology/synoptic
+    expected: [timestamp, station_id, latitude, longitude, air_temp_c, precipitation, solar_radiation, snow_depth, ground_temp]
+  aws:
+    raw_dir: data/raw/aws
+    group: meteorology/disaster_prevention
+    expected: [timestamp, station_id, latitude, longitude, wind, rainfall_detection, cumulative_precipitation, relative_humidity_pct]
+  bridge_tunnel:
+    raw_dir: data/raw/roads/bridge_tunnel
+    group: roads/bridges_tunnels
+    expected: [facility_name, highway_name, facility_type, latitude, longitude]
+  road_centerline:
+    raw_dir: data/raw/roads/centerline
+    group: roads/road_network
+    expected: [geometry]
+  elevation:
+    raw_dir: data/raw/terrain/elevation
+    group: environment/topography
+    expected: [latitude, longitude, elevation_m]
+  river_boundary:
+    raw_dir: data/raw/hydro/rivers
+    group: environment/hydrology
+    expected: [geometry]
