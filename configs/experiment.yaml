@@ -1,8 +1,8 @@
 project: jeonbuk-road-icing
 seed: 42
 # IMPORTANT: confirm these validation-only stations with the official rulebook and real source.
-# Values below come from a prior competition description, not from the uploaded data dictionary.
-holdout_station_ids: [12410, 33411, 23402]
+# Supplied samples do not establish the official validation station list.
+holdout_station_ids: []  # Set only after official validation IDs are verified.
 validation_station_fraction: 0.20
 # Features must be available at unobserved segments WITHOUT using target RWIS sensors.
 # The training script intersects these with columns actually present; at least one is required.

@@ -77,3 +77,39 @@ road-icing-risk/
 - 모델 개발: `src/road_icing/` — 데이터 정합성, 학습, 그룹 기반 검증, 지리공간 특성
 
 본 저장소는 GitHub 원격 저장소에 자동으로 업로드된 상태가 아닙니다. 코드와 설정은 템플릿이며 데이터에 대한 평가 점수를 주장하지 않습니다.
+
+## Dataset inspection and risk relationships
+
+The supplied CSVs were inspected as cp949. RWIS, ASOS and AWS each contain
+10 rows at `2026-01-03 00:00`; they do not establish a sampling interval or a
+winter time series. RWIS explicitly identifies KST, as does AWS; ASOS timezone
+still needs source confirmation. RWIS road-state codes `1`, `12`, `14` require
+an authoritative codebook before deriving `is_ice`. Numeric codes are rejected
+rather than silently classified as non-ice. `#NUM!`, missing values, and malformed
+values such as `0.0.1` require explicit normalization and quality reporting.
+The inventory is available locally at `reports/data_inventory.json`.
+
+After preparing a verified model table, configure officially confirmed holdout
+IDs in `configs/experiment.yaml` (the unverified example IDs were removed), then
+run the existing `train` command. Weather predictors must come from independently
+available AWS/ASOS observations, with verified coordinates, units, publication
+times and backward-only time alignment; target-site RWIS weather is not automatically
+available at unobserved road segments. No raw-source join is inferred here.
+
+Training now writes validation-only relationship analysis into the metrics JSON:
+Spearman associations with the observed target and predicted score, feature-pair
+correlations, joint above/below-median conditions, quantile-bin counts and target
+means, and repeated permutation importance. Importance measures the increase in
+Brier loss (classification) or MAE (temperature) when a variable is shuffled.
+Correlated predictors can mask importance; these summaries do not establish
+causality or statistically independent effects. Counts are included to expose
+sparse groups; repeated observations are not independent evidence.
+
+`models/classification_{validation,holdout}_predictions.csv` contains station,
+time, observed label and `freeze_risk_score = 100 * P(is_ice=1)`. This is an
+uncalibrated model probability, not a validated safety threshold. Brier score,
+ROC AUC and average precision supplement precision/recall/F1; ROC AUC is null for
+single-class evaluation sets. Temperature predictions are saved separately.
+Holdout data is used only for final scoring and predictions, never relationship
+analysis or feature selection. All preprocessing is fitted on training stations.
+No performance claims are made for the supplied one-timestamp samples.
